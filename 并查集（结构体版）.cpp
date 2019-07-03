@@ -22,12 +22,7 @@ node* FindRoot(node *a){
 
 //ºÏ²¢Ê÷
 void Union(node *from,node *to){
-    node *f1 = FindRoot(from),*f2 = to;
-    while(f2->father != NULL){
-        node *t = f2->father;
-        f2->father = f1;
-        f2 = t;
-    }
+    node *f1 = FindRoot(from),*f2 = FindRoot(to);
     if(f1 == f2) return;
     f2->father=f1;
 }
