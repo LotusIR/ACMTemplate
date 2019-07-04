@@ -62,7 +62,7 @@ int query(int L,int R,int l,int r,int rt){
 
 //l:当前节点的左端点 r：当前节点的右端点 rt:当前节点的编号 将L的值改为V
 void update(int L,int V,int l,int r,int rt){
-    if(l==r){Sum[rt]=V;return rt;}
+    if(l==r){Sum[rt]=V;return;}
     int m = (l+r) >> 1;
     pushdown(l,r,rt);
     if(L <= m) update(L,V,l,m,rt<<1);
