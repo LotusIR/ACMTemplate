@@ -12,7 +12,6 @@ struct edge{
 };
 int N,M,father[maxn];
 priority_queue< edge,vector<edge>,greater<edge> > Q;
-
 int Find(int a){
     if(father[a]==a) return a;
     return father[a]=Find(father[a]);
