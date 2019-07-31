@@ -23,6 +23,7 @@ struct nod{
 vector<edge> E[maxn];
 
 int T,N,dis[maxn];//dis[i]为从X到i的最短距离，可以根据情况扩充为d[i][j][k].....
+bool vis[maxn];
 
 //加边，无向图时添加两条边
 void add(int f,int t,int v){
@@ -33,15 +34,17 @@ void add(int f,int t,int v){
 
 void dij(){
     memset(dis,inf,sizeof(dis));
+    memset(vis,0,sizeof(vis));
     priority_queue< nod,vector<nod>,greater<nod> > Q;
+    dis[N]=0;
     Q.push(nod(N,0));//初始态,N为出发点
     while(!Q.empty()){
         nod temp = Q.top();
         int pos = temp.pos;
         int d = temp.d;
         Q.pop();
-        if(d > dis[pos]) continue;
-        dis[pos]=d;
+        if(vis[pos]) continue;
+        vis[pos]=1;
         //遍历邻接表更新相邻点的最短距离
         for(int i = 0; i < E[pos].size(); ++i){
             int to = E[pos][i].to;

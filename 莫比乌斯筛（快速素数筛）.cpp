@@ -15,12 +15,16 @@ void getprime(){
         if(!not_prime[i]){
             prime[cnt++] = i;
             mu[i]=-1;
+            //phi[i]=i-1;
         }
         for(int j = 0; j<cnt && prime[j]*i <= maxn; j++){
             ll x = prime[j]*i;
             not_prime[x] = 1;
-            if(i % prime[j] == 0)
+            if(i % prime[j] == 0){
+                //phi[i*prime[j]]=phi[i]*prime[j];
                 break;
+            }
+            //else phi[i*prime[j]]=phi[i]*(prime[j]-1);
             mu[x] = -mu[i];
         }
     }
