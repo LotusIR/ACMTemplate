@@ -12,14 +12,8 @@ struct edge{
 };
 int N,M,father[maxn];
 priority_queue< edge,vector<edge>,greater<edge> > Q;
-int Find(int a){
-    if(father[a]==a) return a;
-    return father[a]=Find(father[a]);
-}
-void Union(int a,int b){
-    int f1=Find(a),f2=Find(b);
-    father[f2] = f1;
-}
+int Find(int a){ return father[a]==a?a:father[a]=Find(father[a]); }
+void Union(int a,int b){ father[Find(b)] = Find(a); }
 void init(){
     for(int i = 1; i <= M; ++i) father[i]=i;
     while(!Q.empty()) Q.pop();

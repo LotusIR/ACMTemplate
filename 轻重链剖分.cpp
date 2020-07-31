@@ -1,82 +1,56 @@
-#include <bits/stdc++.h>
+/*
+ * @Description: 
+ * @Version: 
+ * @Author: LotusIR
+ * @Date: 2019-11-29 08:33:38
+ * @LastEditors  : LotusIR
+ * @LastEditTime : 2020-01-07 23:14:55
+ */
+#include <iostream>
+#include <cstdio>
+#include <vector>
 using namespace std;
 const int maxn = 1e5+200;
-int n,k;
-int data[maxn];
-vector<int> E[maxn];
-vector< pair<int,int> > leaves;
-pair<int,int> node[maxn];
-int parent[maxn],nxt[maxn];
-bool vis[maxn];
+int n,weight[maxn],Size[maxn],sum[maxn];//nΪ������weightΪ��Ȩ��SizeΪ������С��sumΪǰ׺������
+int dep[maxn],cnt;//depΪ��ȣ�cntΪdfs���õı��
+vector<int> E[maxn];//�ڽӱ�
+int parent[maxn],son[maxn],top[maxn],rk[maxn];//���ڵ㡢�ض��ӡ��������ˡ����dfs����
 
-void init(){
-    memset(nxt,-1,sizeof(nxt));
-    memset(parent,-1,sizeof(parent));
-    for(int i = 0; i < n; ++i) node[i].second=i;
-}
-
-//dfs(root,-1,1)
-void dfs(int u,int uu,int dep){
-    parent[u]=uu;
-    if(E[u].size()==1){
-        leaves.push_back({dep,u});
-        return;
-    }
-    for(int i = 0; i < E[u].size(); ++i){
-        if(E[u][i]==uu) continue;
-        dfs(E[u][i],u,dep+1);
-    }
-}
-
-void solve(int u){
-    node[u].first = 1;
-    while(parent[u]!=-1){
-        if(node[u].first+1>node[parent[u]].first){
-            node[parent[u]].first=node[u].first+1;
-            nxt[parent[u]]=u;
-            u=parent[u];
+//�������ʷ֣�����Ȩ��������߶�����̬��ѯ����������룬����LCA
+//��дdfs1���ɸ�дΪ�����ʷ�
+void dfs1(int u,int fa,int root){
+    parent[u]=fa;dep[u]=dep[fa]+1;Size[u]=1;
+    for(int v,i = 0; i < E[u].size(); ++i){
+        if((v=E[u][i])!=fa){
+            dfs1(v,u,root);Size[u]+=Size[v];
+            if(Size[v]>Size[son[u]]) son[u]=v;
         }
-        else break;
     }
+
 }
 
-void getlen(){
-    sort(leaves.begin(),leaves.end(),greater< pair<int,int> >());
-    for(int i = 0; i < leaves.size(); ++i) solve(leaves[i].second);
-    sort(node,node+n,greater< pair<int,int> >());
+int dfs2(int u,int t){
+    top[u] = t;
+    rk[u] = ++cnt;
+    sum[rk[u]] = weight[u];
+    if(son[u]!=0) dfs2(son[u],t);
+    for(int v,i = 0; i < E[u].size(); ++i)
+        if((v=E[u][i])!=son[u]&&v!=parent[u]) dfs2(v,v);
 }
 
-void Erase(int u){
-    while(u!=-1){
-        vis[u]=1;
-        u=nxt[u];
+//��ѯ����a��b·���ĵ�Ȩ��
+int Treequery(int a,int b){
+    int res = 0;
+    while(top[a]!=top[b]){
+        if(dep[top[a]]<dep[top[b]]) swap(a,b);
+        res += sum[rk[a]]-sum[rk[top[a]]-1];
+        a = parent[top[a]];
     }
+    if(dep[a]<dep[b]) swap(a,b);
+    res += sum[rk[a]]-sum[rk[b]-1];
+    return res;
 }
 
-int main()
-{
-    cin >> n >> k;
-    for(int i = 0; i < k; ++i) cin >> data[i];
-    sort(data,data+n,greater<int>());
-    for(int i = 1; i < n; ++i){
-        int x;
-        cin >> x;
-        E[x].push_back(i);
-        E[i].push_back(x);
-    }
-    init();
-    dfs(0,-1,1);
-    getlen();
-    int ans = 0,i = 0,j = 0;
-    while(i<k&&j<n){
-        if(vis[node[j].second]){
-            j++;
-            continue;
-        }
-        ans += node[j].first*data[i];
-        Erase(node[j].second);
-        ++i;++j;
-    }
-    cout << ans-data[0] << endl;
-    return 0;
+int pre_sum(){
+    for(int i = 1; i <= n; ++i) sum[i]+=sum[i-1];
 }

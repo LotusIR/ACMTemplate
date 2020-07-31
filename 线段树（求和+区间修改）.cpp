@@ -4,13 +4,13 @@ const int maxn = 2e5+300;
 const int inf = 0x3f3f3f3f;
 using namespace std;
 int a[maxn],Sum[maxn<<2],pos[maxn],lazy[maxn<<2];
-//¸üÐÂµ±Ç°½Úµã
+
 void pushup(int rt){
     Sum[rt] = Sum[rt<<1] + Sum[rt<<1|1];
 }
-//ÏÂ´«º¯Êý
+
 void pushdown(int l,int r,int rt){
-    //Çø¼ä¸ÄÖµ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
     if(lazy[rt]){
         int m = (l+r) >> 1;
         lazy[rt<<1] = lazy[rt];
@@ -19,7 +19,7 @@ void pushdown(int l,int r,int rt){
         Sum[rt<<1|1] = lazy[rt] * (r-m);
         lazy[rt] = 0;
     }
-    //Çø¼äÔö¼õ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /*if(lazy[rt]){
         int m = (l+r) >> 1;
         lazy[rt<<1] += lazy[rt];
@@ -29,7 +29,7 @@ void pushdown(int l,int r,int rt){
         lazy[rt] = 0;
     }*/
 }
-//l:µ±Ç°½ÚµãµÄ×ó¶Ëµã r£ºµ±Ç°½ÚµãµÄÓÒ¶Ëµã rt:µ±Ç°½ÚµãµÄ±àºÅ
+//l:ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½ï¿½Ëµï¿½ rï¿½ï¿½ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ò¶Ëµï¿½ rt:ï¿½ï¿½Ç°ï¿½Úµï¿½Ä±ï¿½ï¿½
 void build(int l,int r,int rt){
     if(l == r){
         pos[l] = rt;
@@ -41,7 +41,7 @@ void build(int l,int r,int rt){
     build(m+1,r,rt<<1|1);
     pushup(rt);
 }
-//l:µ±Ç°½ÚµãµÄ×ó¶Ëµã r£ºµ±Ç°½ÚµãµÄÓÒ¶Ëµã rt:µ±Ç°½ÚµãµÄ±àºÅ [L,R]²éÑ¯µÄÇø¼ä
+//l:ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½ï¿½Ëµï¿½ rï¿½ï¿½ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ò¶Ëµï¿½ rt:ï¿½ï¿½Ç°ï¿½Úµï¿½Ä±ï¿½ï¿½ [L,R]ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int query(int L,int R,int l,int r,int rt){
     if(L <= l && R >= r) return Sum[rt];
     int m = (l+r) >> 1;
@@ -51,7 +51,7 @@ int query(int L,int R,int l,int r,int rt){
     if(R > m) res += query(L,R,m+1,r,rt<<1|1);
     return res;
 }
-//l:µ±Ç°½ÚµãµÄ×ó¶Ëµã r£ºµ±Ç°½ÚµãµÄÓÒ¶Ëµã rt:µ±Ç°½ÚµãµÄ±àºÅ ½«LµÄÖµ¸ÄÎªV
+//l:ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½ï¿½Ëµï¿½ rï¿½ï¿½ï¿½ï¿½Ç°ï¿½Úµï¿½ï¿½ï¿½Ò¶Ëµï¿½ rt:ï¿½ï¿½Ç°ï¿½Úµï¿½Ä±ï¿½ï¿½ ï¿½ï¿½Lï¿½ï¿½Öµï¿½ï¿½ÎªV
 void update(int L,int V,int l,int r,int rt){
     if(l==r){Sum[rt]=V;return;}
     int m = (l+r) >> 1;
@@ -62,10 +62,10 @@ void update(int L,int V,int l,int r,int rt){
 }
 void segupdate(int L,int R,int l,int r,int rt,int lzy){
     if(L <= l && R >= r){
-        //Çø¼ä¸ÄÖµ
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
         lazy[rt]=lzy;
         Sum[rt] = (r-l+1) * lzy;
-        //Çø¼ä¼Ó¼õ
+        //ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½
         /*lazy[rt]+=lzy;
         sum[rt]+=(r-l+1) * lzy;*/
         return;

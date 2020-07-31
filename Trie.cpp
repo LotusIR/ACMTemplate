@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 
+ * @Author: LotusIR
+ * @Date: 2019-07-01 22:18:36
+ * @LastEditors: LotusIR
+ * @LastEditTime: 2020-05-23 14:52:10
+ */ 
 #include <stdio.h>
 #include <iostream>
 #include <cstring>
@@ -12,20 +20,18 @@ struct trie
     trie()
     {
         cnt = 1;
-        memset(nxt,NULL,sizeof(nxt));
+        memset(nxt,0,sizeof(nxt));
     }
 };
 
 trie *root;
-int i,id;
-char S[maxn],s1[maxn];
+string S,s1;
 
-void Insert(char *s)
+void Insert(string s)
 {
     trie *p = root;
-    i = 0;
-    while(s[i]){
-        id = s[i] - 'a';
+    for(int i = 0; i < s.length(); ++i){
+        int id = s[i] - 'a';
         if(p->nxt[id])
         {
             p = p->nxt[id];
@@ -36,28 +42,25 @@ void Insert(char *s)
             p -> nxt[id] = new trie;
             p = p -> nxt[id];
         }
-        i++;
     }
 }
 
 
-int query(char* s)
+int query(string s)
 {
     trie *p = root;
-    i = 0;
-    while(s[i])
+    for(int i = 0 ; i < s.length(); ++i)
     {
         id = s[i] - 'a';
         if(p -> nxt[id]) p = p -> nxt[id];
         else return 0;
-        i++;
     }
     return p -> cnt;
 }
 
 void Free(trie *p)
 {
-    for(i = 0; i < 26; ++i) if(p -> nxt[i] != NULL) Free(p->nxt[i]);
+    for(int i = 0; i < 26; ++i) if(p -> nxt[i] != NULL) Free(p->nxt[i]);
     delete(p);
     p = NULL;
 }
@@ -65,13 +68,13 @@ void Free(trie *p)
 int main()
 {
     root = new trie;
-    while(scanf("%s",S)){
+    while(cin >> S){
         Insert(S);
         cin.get();
         if(cin.peek() == '\n') break;
     }
-    while(scanf("%s",s1) != EOF){
-        printf("%d\n",query(s1));
+    while(cin >> s1){
+        cout << query(s1) << endl;
     }
     return 0;
 }

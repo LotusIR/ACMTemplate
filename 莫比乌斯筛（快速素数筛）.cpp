@@ -6,7 +6,7 @@ using namespace std;
 
 ll mu[maxn],not_prime[maxn],prime[maxn];
 
-//获取质数及莫比乌斯函数
+//锟斤拷取锟斤拷锟斤拷锟斤拷莫锟斤拷锟斤拷斯锟斤拷锟斤拷
 void getprime(){
     mu[1] = 1;
     not_prime[1] = 1;
@@ -30,7 +30,7 @@ void getprime(){
     }
 }
 
-//快速幂
+//锟斤拷锟斤拷锟斤拷
 ll qpow(ll x,ll y){
     ll res = 1;
     while(y){
